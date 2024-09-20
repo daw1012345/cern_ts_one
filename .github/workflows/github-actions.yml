@@ -1,0 +1,38 @@
+name: Code-quality check
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+jobs:
+  lint-black:
+    runs-on: ubuntu-22.04
+    name: Lint with Black
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - uses: psf/black@stable
+      with:
+        options: "--check --verbose"
+        version: "~= 24.8"
+  lint-isort:
+    runs-on: ubuntu-22.04
+    name: Lint with isort
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - uses: isort/isort-action@master
+  lint-flake8:
+    runs-on: ubuntu-22.04
+    name: Lint with flake8
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: flake8 Lint
+        uses: py-actions/flake8@v2
